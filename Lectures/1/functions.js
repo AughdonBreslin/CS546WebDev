@@ -37,3 +37,14 @@ function haveAnInnerFunction() {
 }
 
 console.log(haveAnInnerFunction());
+
+function mult(num1,num2) {
+    return num1*num2;
+}
+console.log(mult(5));
+
+const myObj = {};
+myObj.f = "test"
+const x = 5;
+x = 6;
+console.log(myObj);
