@@ -410,6 +410,41 @@ try {
 } catch (e) {
     console.log(e);
 }
+try {
+    console.log(arrayUtils.isEqual([1,[2,[3,[4,[5,[6,[7,[8,[9,[0]]]]]]]]]],[1,[2,[3,[4,[5,[6,[7,[8,[9,[0]]]]]]]]]]));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(arrayUtils.isEqual([[[[[[[[[[[[0],1],2],3],4],5],6],7],8],9],10],11],[[[[[[[[[[[[0],1],2],3],4],5],6],7],8],9],10],11]));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(arrayUtils.isEqual([0,'0'],['0',0]));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(arrayUtils.isEqual([-9999999,0,9999999,'a','z','0'],['0','a','z',0,9999999,-9999999]));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(arrayUtils.isEqual(['0'],[0]));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(arrayUtils.isEqual(['4206969',['90210',90210],4206969],[[90210,'90210'],'4206969',4206969]));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(arrayUtils.isEqual(['4206969',['90210',90210],4206969],[4206969, '4206969', [90210,'90210']]));
+} catch (e) {
+    console.log(e);
+}
 
 console.log();
 
@@ -511,6 +546,21 @@ try {
 } catch (e) {
     console.log(e);
 }
+try {
+    console.log(stringUtils.replaceChar("1234124123512345097235712491247132952173023111111"));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(stringUtils.replaceChar("ffff this class"));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(stringUtils.replaceChar("me when she packing: mmm"));
+} catch (e) {
+    console.log(e);
+}
 
 console.log();
 
@@ -579,6 +629,7 @@ try {
 console.log();
 
 console.log("OBJECTS");
+console.log("makeArray Testing:");
 try {
     console.log(objUtils.makeArrays());
 } catch (e) {
@@ -596,6 +647,16 @@ try {
 }
 try {
     console.log(objUtils.makeArrays([{}]));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(objUtils.makeArrays([null,null]));
+} catch (e) {
+    console.log(e);
+}
+try {
+    console.log(objUtils.makeArrays([{},{}]));
 } catch (e) {
     console.log(e);
 }
@@ -783,7 +844,12 @@ try {
     console.log(e);
 }
 try { 
-    console.log(objUtils.computeObject({a:1,b:2,c:3,d:4},(num,num2) => {return num*num2}));
+    console.log(objUtils.computeObject({a:0,b:5,c:100,d:95, e:50},(num) => {return `What are the odds these are seen? About ${num}%.`;}));
+} catch (e) {
+    console.log(e);
+}
+try { 
+    console.log(objUtils.computeObject({a:0,b:0,c:0,d:0, e:-5},(num) => {return `What are the odds I caught every edge case? About ${num}%.`;}));
 } catch (e) {
     console.log(e);
 }

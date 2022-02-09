@@ -1,0 +1,15 @@
+{
+  "name": "cs-546-lab3",
+  "version": "1.0.0",
+  "description": "My lab 3 module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Aughdon Breslin 10447694",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.25.0"
+  }
+}

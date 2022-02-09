@@ -30,7 +30,7 @@ async function date() {
     }
 }
 
-const orderUber = async(details) => {
+const orderUber = async (details) => {
     const message = `Get me an Uber ASAP to ${details.location}, we are going on a date.`;
     return message;
 }

@@ -1,4 +1,4 @@
-
+// YAY ERROR CHECKING
 function checkIsProper (val, varType, variableName) {
     // Check parameter type is correct (also checks if its defined)
     if (typeof val != varType) throw `Error: ${variableName || 'provided variable'} must be a ${varType}.`;
@@ -107,7 +107,27 @@ const countRepeating = function countRepeating(array) {
     }
     return tallies;
 }
-
+function sortAllTheseTypes(arr) {
+    let count = 0;
+    // put all elements in this order of types
+    for(const elem of ['string','number','undefined','null','boolean','symbol','object','function']) {
+        for(let j = 0; j < arr.length; j++) { //[0,'0']
+            if(typeof arr[j] == elem){
+                if(elem == 'object') { //object is code word for array for this stinky problem
+                    arr[j] = sortAllTheseTypes(arr[j]);
+                } else {
+                    let temp = arr[j];            //temp = '0'
+                    arr[j] = arr[count];  //[0, 0]
+                    arr[count] = temp;        //['0',0]
+                    count++;
+                }
+            }
+        }
+    }
+    // still using sort() ;)
+    arr.sort();
+    return arr;
+}
 const isEqual = function isEqual(arrayOne,arrayTwo) {
     checkNumOfArgs(arguments,2,2);
     checkMixedArray(arrayOne);
@@ -115,8 +135,9 @@ const isEqual = function isEqual(arrayOne,arrayTwo) {
 
     // sorting immediately doesnt seem to hurt anything, SIKE it does 
       // also sorting in ascending order doesnt matter as long as theyre both done the same way
-    // console.log(arrayOne,arrayTwo);
-
+        // ALL THESE TYPES MFERS ALL THESE TYPES GODDAMN
+    arrayOne = sortAllTheseTypes(arrayOne);
+    arrayTwo = sortAllTheseTypes(arrayTwo);
     // check size
     if(arrayOne.length != arrayTwo.length) return false;
     for (let i = 0; i < arrayOne.length; i++) {
@@ -129,21 +150,19 @@ const isEqual = function isEqual(arrayOne,arrayTwo) {
         // if both arrays, dive in and check those
         if(Array.isArray(arrayOne[i]) && Array.isArray(arrayTwo[i])) {
             // can work for array of arrays but i fear it may not for array of arrays of arrays
-            arrayOne[i].sort();
-            arrayTwo[i].sort();
+            // put all strings first to account for '0' and 0 not being prioritized
+            arrayOne[i] = sortAllTheseTypes(arrayOne[i]);
+            arrayTwo[i] = sortAllTheseTypes(arrayTwo[i]);
         
             // if subarrays are not equal, return false
             if(!isEqual(arrayOne[i],arrayTwo[i])) return false;
         }
         
     }
-    // somewhat janky solution to correct both h/carrot/false/true example and surface level arrays
-    arrayOne.sort();
-    arrayTwo.sort();
     for (let i = 0; i < arrayOne.length; i++) {
         // if neither are arrays, check equality
         if(!Array.isArray(arrayOne[i]) && !Array.isArray(arrayTwo[i])) {
-            if(arrayOne[i] != arrayTwo[i]) {
+            if(arrayOne[i] !== arrayTwo[i]) {
                 return false;
             }
         }

@@ -1,3 +1,4 @@
+
 function checkNumOfArgs(args, numArgsLow,numArgsHigh) {
     if(args.length < numArgsLow || args.length > numArgsHigh) throw (numArgsLow == numArgsHigh)
      ? ((numArgsLow == 1) 
