@@ -44,15 +44,15 @@ const listShareholders = async function listShareholders(stockName) {
     for (const shareholder of stock.shareholders) {
         let person = await people.getPersonById(shareholder.userId);
         peeps.push({
-            'first_name':person.first_name,
-            'last_name':person.last_name,
-            'number_of_shares':shareholder.number_of_shares
+            first_name: person.first_name,
+            last_name: person.last_name,
+            number_of_shares: shareholder.number_of_shares
         });
     }
     return {
-        'id': stock.id,
-        'stock_name': stock.stock_name,
-        'shareholders': peeps
+        id: stock.id,
+        stock_name: stock.stock_name,
+        shareholders: peeps
     };
 }
 
@@ -92,8 +92,8 @@ const listStocks = async function listStocks(firstName, lastName) {
         let shareholder = stock.shareholders.find((shareholder) => shareholder.userId == target.id);
         if(shareholder) {
             portfolio.push({
-                'stock_name': stock.stock_name,
-                'number_of_shares': shareholder.number_of_shares
+                stock_name: stock.stock_name,
+                number_of_shares: shareholder.number_of_shares
             });
         }
     }

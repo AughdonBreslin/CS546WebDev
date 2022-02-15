@@ -68,9 +68,9 @@ const sameEmail = async function sameEmail(emailDomain) {
 const manipulateIp = async function manipulateIp() {
     checkNumOfArgs(arguments,0,0);
     let people = await getPeople();
-    let highest = {};
+    let high = {};
     let highIP = -1;
-    let lowest = {};
+    let low = {};
     let lowIP = 9999999999999;
     let sum = 0;
     for(const person of people) {
@@ -79,21 +79,21 @@ const manipulateIp = async function manipulateIp() {
         ip = parseInt(ip.split('').sort().join(""));
         if(highIP < ip) {
             highIP = ip;
-            highest.firstName = person.first_name;
-            highest.lastName = person.last_name;
+            high.firstName = person.first_name;
+            high.lastName = person.last_name;
         }
         if(lowIP > ip) {
             lowIP = ip;
-            lowest.firstName = person.first_name;
-            lowest.lastName = person.last_name;
+            low.firstName = person.first_name;
+            low.lastName = person.last_name;
         }
         sum += ip;
     }
     let average = Math.floor(sum/people.length);
     return {
-        'highest': highest,
-        'lowest': lowest,
-        'average': average
+        highest: high,
+        lowest: low,
+        average: average
     };
 }
 

@@ -1,0 +1,11 @@
+{
+  "name": "5",
+  "version": "1.0.0",
+  "description": "My lab 5 module.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aughdon Breslin 10447694",
+  "license": "MIT"
+}

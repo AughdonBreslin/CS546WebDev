@@ -248,6 +248,11 @@ async function main(){
         console.log(e);
     }
     try {
+        console.log(await stocks.listStocks(1,2));
+    } catch (e) {
+        console.log(e);
+    }
+    try {
         console.log(await stocks.listStocks("pp"));
     } catch (e) {
         console.log(e);
@@ -257,11 +262,17 @@ async function main(){
     } catch (e) {
         console.log(e);
     }
+    try { //she was born in 2010 tf she got over a 1000 shares for
+        console.log(await stocks.listStocks("Alina", "Cisson"));
+    } catch (e) {
+        console.log(e);
+    }
     try {
         console.log(await stocks.listStocks("Grenville", "Pawelke"));
     } catch (e) {
         console.log(e);
     }
+    
 
     console.log();
 
