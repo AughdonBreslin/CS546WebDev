@@ -1,0 +1,15 @@
+{
+  "name": "6",
+  "version": "1.0.0",
+  "description": "My lab 6 module.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aughdon Breslin 10447694",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongodb": "^4.4.1"
+  }
+}
