@@ -91,7 +91,9 @@ const create = async function create(name, genre, website, recordLabel, bandMemb
       website: website,
       recordLabel: recordLabel,
       bandMembers: bandMembers,
-      yearFormed: yearFormed
+      yearFormed: yearFormed,
+      albums: [],
+      overallRating: 0
     };
 
     // Add entry into database
@@ -109,7 +111,7 @@ const create = async function create(name, genre, website, recordLabel, bandMemb
 const getAll = async function getAll() {
     checkNumOfArgs(arguments,0,0);
     const bandCollection = await bands();
-    const bandList = await bandCollection.find({}).toArray();
+    const bandList = await bandCollection.find({}, {projection: {_id: 1, name: 1}}).toArray();
     if(!bandList) throw `Error: Could not find bandCollection.`;
     for(i in bandList) {
         bandList[i]._id = bandList[i]._id.toString();
@@ -126,7 +128,7 @@ const get = async function get(id) {
     if(id != new ObjectId(id)) throw `Error: ID is not a valid ObjectId.`;
 
     const bandCollection = await bands();
-    const band = await bandCollection.findOne({ _id: ObjectId(id) });
+    const band = await bandCollection.findOne({_id: ObjectId(id)});
     if(!band) throw `Error: Band not found with ID ${id}.`;
     band._id = band._id.toString();
     return band;
@@ -140,7 +142,7 @@ const remove = async function remove(id) {
     // https://stackoverflow.com/questions/13850819/can-i-determine-if-a-string-is-a-mongodb-objectid
     if(!ObjectId.isValid(id) || id != new ObjectId(id)) throw `Error: ID is not a valid ObjectId.`;
     const bandCollection = await bands();
-    const band = await bandCollection.findOneAndDelete({ _id: ObjectId(id) });
+    const band = await bandCollection.findOneAndDelete({_id: ObjectId(id)}, {projection: {_id: 1, name: 1}});
     if(!band.value) throw `Error: Band not found with ID ${id}.`;
 
     return `${band.value.name} has been successfully deleted!`;
@@ -171,10 +173,10 @@ const update = async function update(id, name, genre, website, recordLabel, band
     bandMembers = trimArray(bandMembers);
 
     const bandCollection = await bands();
-    const band = await bandCollection.updateOne({ _id: ObjectId(id) }, {$set: {name: name, genre: genre, website: website, recordLabel: recordLabel, bandMembers: bandMembers, yearFormed: yearFormed}});
-    if(!band.value) throw `Error: Band not found with ID ${id}.`;
-
-    return band;
+    const band = await bandCollection.findOneAndUpdate({ _id: ObjectId(id) }, {$set: {name: name, genre: genre, website: website, recordLabel: recordLabel, bandMembers: bandMembers, yearFormed: yearFormed}});
+    if(!band) throw `Error: Band not found with ID ${id}.`;
+    const newBand = await bandCollection.findOne({_id: ObjectId(id)});
+    return newBand;
 }
 
 module.exports = {

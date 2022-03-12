@@ -1,6 +1,9 @@
 const mongoCollections = require('../config/mongoCollections');
-const albums = mongoCollections.albums;
+const bands = mongoCollections.bands;
 const { ObjectId } = require('mongodb');
+const { ObjectID } = require('bson');
+const data = require('.');
+const bandData = data.bands;
 
 function checkNumOfArgs(args, numArgsLow, numArgsHigh) {
     if(args.length < numArgsLow || args.length > numArgsHigh) throw (numArgsLow == numArgsHigh)
@@ -32,9 +35,12 @@ function checkTracks(array, elemType, arrName) {
 }
 
 function checkRelease(date) {
-    if (date.length < 10) throw `Error: Release date must be in form 'MM/DD/YYYY'.`;
+    if (date.length != 10) throw `Error: Release date must be in form 'MM/DD/YYYY'.`;
     let year = parseInt(date.substr(-4));
-    if (isNaN(year) || year < 1900 || year > 2023) throw `Error: Year must be a number within the range [1900,2023].`;
+    if (isNaN(year) || !Number.isInteger(year) || year < 1900 || year > 2023) throw `Error: Year must be a number within the range [1900,2023].`;
+}
+function checkRating(rating) {
+    if(rating < 1 || rating > 5) throw `Error: Rating must be a number within the range [1,5].`;
 }
 
 function trimArray(array) {
@@ -43,18 +49,6 @@ function trimArray(array) {
     }
     return array;
 }
-
-async function getBandById(id) {
-    checkNumOfArgs(arguments,1,1);
-    checkIsProper(id,'string','ID');
-    id = id.trim();
-    if (!ObjectId.isValid(id)) throw 'Error: Invalid object ID';
-    const bandCollection = await bands();
-    const band = await bandCollection.findOne({ _id: ObjectId(id) });
-    if (band === null) throw `Error: Band not found with ID ${id}.`;
-
-    return band;
-};
 
 const create = async function create(bandId, title, releaseDate, tracks, rating) {
 
@@ -73,34 +67,120 @@ const create = async function create(bandId, title, releaseDate, tracks, rating)
     checkIsProper(rating,'number','rating');
     checkRating(rating);
 
-    // TODO: Left off here. 
     // Trimming
-    name = name.trim();
-    genre = trimArray(genre);
-    recordLabel = recordLabel.trim();
-    bandMembers = trimArray(bandMembers);
+    title = title.trim();
+    tracks = trimArray(tracks);
 
     // Get database and create entry
     const bandCollection = await bands();
     if(!bandCollection) throw `Error: Could not find bandCollection.`;
 
-    let newBand = {
-      name: name,
-      genre: genre,
-      website: website,
-      recordLabel: recordLabel,
-      bandMembers: bandMembers,
-      yearFormed: yearFormed
+    // Create new album for the band we have to find
+    let newAlbum = {
+        _id: new ObjectId(),
+        title: title,
+        releaseDate: releaseDate,
+        tracks: tracks,
+        rating: rating
     };
-
-    // Add entry into database
-    const insertInfo = await bandCollection.insertOne(newBand);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId) throw `Error: Could not add new band.`;
-
-    // Return the added entry
-    const newId = insertInfo.insertedId.toString();
-    const band = await getBandById(newId);
-    band._id = band._id.toString();
     
-    return band;
+    // Find band and add album into band's album field
+    const band = await bandCollection.findOneAndUpdate({_id: ObjectId(bandId)}, {$push:{albums: newAlbum}});
+    if(!band) throw `Error: Band not found with ID ${bandId}.`;
+    band.value._id = band.value._id.toString();
+    newAlbum._id = newAlbum._id.toString();
+    
+    return newAlbum;
+}
+
+const getAll = async function getAll(bandId) {
+    checkNumOfArgs(arguments,1,1);
+    checkIsProper(bandId,'string','bandId');
+    bandId = bandId.trim();
+    if(bandId != new ObjectId(bandId)) throw `Error: Band ID is not a valid ObjectId.`;
+    
+    // band not found is already handled within get, and albums is always initialized to []
+    const bandCollection = await bands();
+    if(!bandCollection) throw `Error: Could not find bandCollection.`;
+
+    const band = await bandCollection.findOne({_id: ObjectId(bandId)});
+    if(!band) throw `Error: Band not found with ID ${bandId}.`;
+    let albums = band.albums;
+
+    return albums;
+}
+// We can query on subdocuments very easily
+// findByDirector: async (directorName) => {
+//     if (!directorName) throw 'You must provide a director name';
+//     const movieCollection = await movies();
+//     // to query on a subdocument field, just provide the path to the field as a string key;
+//     // so when you have {info: {director: someName}}, just find on {"info.director": someName}
+//     return await movieCollection
+//       .find({ 'info.director': directorName })
+//       .toArray();
+//   },
+const get = async function get(albumId) {
+    checkNumOfArgs(arguments,1,1);
+    checkIsProper(albumId,'string','albumId');
+    albumId = albumId.trim();
+    if(albumId != new ObjectId(albumId)) throw `Error: Album ID is not a valid ObjectId.`;
+
+    let bandCollection = await bands();
+    const band = await bandCollection.findOne({'albums._id':ObjectId(albumId)});
+    if(!band) throw `Error: Band not found with album ID ${albumId}.`;
+    band._id = band._id.toString();
+
+    // go through albums list, find the album whose id matches albumId
+    const album = await band.albums.find(alb => alb._id.equals(albumId));
+    if(!album) throw `Error: Somehow a band was found containing this album ID yet the album itself wasnt found?`;
+    album._id = album._id.toString();
+
+    return album;
+}
+
+const remove = async function remove(albumId) {
+    checkNumOfArgs(arguments,1,1);
+    checkIsProper(albumId,'string',);
+    albumId = albumId.trim();
+    if(albumId != new ObjectId(albumId)) throw `Error: Album ID is not a valid ObjectId.`;
+    
+    let bandCollection = await bands();
+    const band = await bandCollection.findOneAndUpdate({'albums._id':ObjectId(albumId)},
+                                        {$pull:{albums:{_id: ObjectId(albumId)}}});
+    if(!band.value) throw `Error: Band not found with album ID ${albumId}.`;
+    const newBand = await bandCollection.findOne({_id:band.value._id});
+    newBand._id = newBand._id.toString();
+    return newBand;
+}
+
+const updateOverall = async function updateOverall(bandId) {
+    checkNumOfArgs(arguments,1,1);
+    checkIsProper(bandId,'string','bandId');
+    bandId = bandId.trim();
+    if(bandId != new ObjectId(bandId)) throw `Error: Band ID is not a valid ObjectId.`;
+
+    let bandCollection = await bands();
+    const band = await bandCollection.findOne({_id: ObjectId(bandId)});
+    if(!band) throw `Error: Band not found with ID ${bandId}.`;
+    let totRating = 0;
+    for (const album of band.albums){
+        totRating += album.rating;
+    }
+    totRating /= band.albums.length;
+    const newband = await bandCollection.findOneAndUpdate({_id: ObjectId(bandId)},
+                                        {$set:{overallRating: totRating}});
+    if(!newband.value) throw `Error: Band not found with ID ${bandId}.`;
+    return totRating;
+}
+
+module.exports = {
+    firstName: "Aughdon",
+    lastName: "Breslin",
+    studentId: "10447694",
+    create,
+    getAll,
+    get,
+    remove,
+    updateOverall
+    // updateOverallButForAlbumId
 }
