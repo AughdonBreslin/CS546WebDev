@@ -1,0 +1,37 @@
+
+<main>
+    <article>
+        <h1>{{title}}</h1>
+        <img src={{img}}  alt="Show's Image is Not Found">
+        <dl>
+            <dt>Language</dt>
+            <dd>{{language}}</dd>
+            <dt>Genre</dt>
+            <dd>
+                {{#if hasGenre}}
+                <ul class="genre-list">
+                {{#each genre}}
+                <li>
+                {{this}}
+                </li>
+                {{/each}}
+                </ul>
+                {{else}}
+                    N/A
+                {{/if}}
+            </dd>
+            <dt>Average Rating</dt>
+            <dd>{{rating}}</dd>
+            <dt>Network</dt>
+            <dd>{{network}}</dd>
+            <dt>Summary</dt>
+            <dd>{{{summary}}}</dd>
+        </dl>
+    </article>
+        
+    {{!-- <footer>
+        <nav>
+            <a href="/" class="search-link">Make another search</a>
+        </nav>
+    </footer> --}}
+</main>

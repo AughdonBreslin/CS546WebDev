@@ -1,0 +1,107 @@
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	font-size: 14pt;
+}
+/* So these all affect the pages and ive made a bunch of changes */
+body {
+	background:#001f3f;
+	font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+main {
+	max-width: 75%;
+	margin: auto;
+}
+
+header {
+	border-bottom: 1px solid #afafaf;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: #7FDBFF;
+	margin-bottom: 5px;
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+}
+
+h3 {
+	font-size: 1.5rem;
+}
+
+h4 {
+	font-size: 1.25rem;
+}
+
+h5 {
+	font-size: 1.15rem;
+}
+
+h6 {
+	font-size: 1.05rem;
+}
+p {
+	font-size: 1rem;
+	line-height: 2;
+	color:#7FDBFF;
+}
+li {
+	font-size: 1rem;
+	line-height: 2;
+	color:#7FDBFF;
+}
+ul {
+	list-style-type: square;
+}
+a {
+	color: #B10DC9;
+	text-decoration: none;
+}
+label {
+	font-weight: bold;
+	color: #7FDBFF;
+}
+button {
+	background-color: #001f3f;
+	color: #7FDBFF;
+	border-color: white;
+}
+input {
+	background-color: #001f3f;
+	color: #7FDBFF;
+	border-color: white;
+}
+dt {
+	color: #7FDBFF;
+	font-weight: bold;
+}
+dd {
+	color: #7FDBFF;
+	font-size:smaller;
+}
+
+img {
+	border: 0.1rem solid #7FDBFF;
+	color: #7FDBFF
+}
+
+.error-list li {
+	color: #ff0000;
+}
+
+.error {
+	color: #ff0000;
+}

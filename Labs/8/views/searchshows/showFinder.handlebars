@@ -1,0 +1,25 @@
+
+    <main>
+        <article>
+            <h1>Show Finder</h1>
+            <p>
+                Welcome to Show Finder! This website will be my first simple templated web application! It will search through the TV Maze API for a keyword to find shows.
+            </p>
+            <form action="/searchshows" method="POST" class="new-post-form">
+                <label for="searchshow">Search Show:</label>
+                <input type="text" id="searchshow" name="showSearchTerm">
+                <button type="submit">Submit</button>
+            </form>
+            {{#if hasErrors}}
+            <ul class="error-list">
+                {{#each errors}}
+                <li>
+                {{this}}
+                </li>
+                {{/each}}
+            </ul>
+            {{!-- this has to be a p tag for some reason --}}
+            <p class="error">{{errorMessage}}</p>
+            {{/if}}
+        </article>
+    </main>
