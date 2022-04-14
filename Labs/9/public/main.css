@@ -1,0 +1,120 @@
+:root {
+    --animation-time: 1s;
+}
+
+/* Literally danger */
+.danger {
+    animation: colorRotate  var(--animation-time) linear 0s infinite;
+}
+
+/* Dangerous addition */
+@keyframes colorRotate {
+    from {
+      background-color: #FF0000;
+      color:#8B00FF;
+    }
+    16% {
+      background-color: #FF7F00;
+      color:#2E2B5F;
+    }
+    33% {
+      background-color: #FFFF00;
+      color: #0000FF;
+    }
+    50% {
+      background-color: #00FF00;
+      color: #00FF00;
+    }
+    67% {
+      background-color: #0000FF;
+      color: #FFFF00;
+    }
+    83% {
+        background-color: #2E2B5F;
+        color: #FF7F00;
+    }
+    100% {
+        background-color: #8B00FF;
+        color: #FF0000;
+    }
+}
+
+/* Peaceful stuff */
+#errorMessage {
+	font-size: 1rem;
+	line-height: 2;
+	color:#FF0000;
+}
+
+.is-prime {
+    font-size: 1rem;
+	line-height: 2;
+	color:#00E676;
+}
+
+.not-prime {
+    font-size: 1rem;
+	line-height: 2;
+	color:#FF3D00;
+}
+
+body {
+    background:#001f3f;
+	font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+h1{
+	color: #7FDBFF;
+	margin-bottom: 5px;
+}
+
+p {
+	font-size: 1rem;
+	line-height: 2;
+	color:#7FDBFF;
+}
+
+li {
+	font-size: 1rem;
+	line-height: 2;
+	color:#7FDBFF;
+}
+
+ul {
+	list-style-type: square;
+}
+
+#page-container {
+    position: relative;
+    min-height: 95vh;
+}
+
+#content-wrap {
+    padding-bottom: 2.5rem;
+}
+
+footer {
+	color: #7FDBFF;
+	text-decoration: none;
+    position: absolute;
+    bottom: 0;
+    width: 95%;
+    height: 2.5rem;
+}
+
+label {
+	font-weight: bold;
+	color: #7FDBFF;
+}
+
+button {
+	background-color: #001f3f;
+	color: #7FDBFF;
+	border-color: lightslategray;
+}
+
+input {
+	background-color: #001f3f;
+	color: #7FDBFF;
+	border-color: lightslategray;
+}
