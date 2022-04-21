@@ -25,11 +25,11 @@ router.get('/:id', async (req, res) => {
             notEmpty = false;
         }
         if(!show.image){
-            show.image={medium:undefined}
+            show.image={medium:"https://www.escapeauthority.com/wp-content/uploads/2116/11/No-image-found.jpg"}
         }
         res.render('shows/results.handlebars', {
             title: show.name || "N/A",
-            img: show.image.medium || "N/A",
+            img: show.image.medium,
             language: show.language || "N/A",
             hasGenre: notEmpty,
             genre: show.genres,
