@@ -1,13 +1,14 @@
 (function () {
 
     function isPrime(num) {
-        if (num <= 3) return num > 1;
-        if (num % 2 == 0 || num % 3 == 0) return false;
+        if (num == 1) return false;
+        if (num == 2 || num == 3 || num == 5) return true;
+        if (num % 2 == 0 || num % 3 == 0 || num % 5 == 0) return false;
 
-        let i = 5;
+        let i = 7;
         while (Math.pow(i,2) <= num) {
-            if (num % i == 0 || num % (i+2) == 0) return false;
-            i += 6;
+            if (num % i == 0 || num % (i+4) == 0 || num % (i+6) == 0 || num % (i+10) == 0 || num % (i+12) == 0 || num % (i+16) == 0 || num % (i+22) == 0 || num % (i+24) == 0) return false;
+            i+=30;
         }
         return true;
     }
